@@ -1,6 +1,6 @@
 import express from 'express';
 import connectDB from './config/db.mjs';
-
+import sendEmailRouter from './routes/sendEmail.mjs'
 
 connectDB();
 
@@ -15,6 +15,7 @@ app.get('/',(req,res)=>{
 
 
 //Routing
+app.use('/emailSend', sendEmailRouter);
 
 
 //Starting server
