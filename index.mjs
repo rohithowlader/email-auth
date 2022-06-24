@@ -1,5 +1,8 @@
 import express from 'express';
+import connectDB from './config/db.mjs';
 
+
+connectDB();
 
 const app = express();
 app.use(express.urlencoded({extended: false}));
