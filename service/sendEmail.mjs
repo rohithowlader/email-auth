@@ -14,6 +14,7 @@ const checkEmail = async (email) => {
 
 sendEmailRouter.post('/', async (req, res) => {
     try {
+
         const isValidSender = await checkEmail(req.body.email);
 
         const transporter = nodemailer.createTransport({
@@ -32,7 +33,7 @@ sendEmailRouter.post('/', async (req, res) => {
             from:  process.env.EMAIL,
             to: `${req.body.email}`,
             subject: `OTP for login`,
-            text: `OTP for login is XXXXXX`
+            text: `OTP for login is ${req.body.OTP}`
         };
         if ( !isValidSender) {
             return res.status(500).send("Wrong Email input");

@@ -13,5 +13,7 @@ signIn.post('/',async(req,res)=>{
     const salt = await bcrypt.genSalt(10);
     otp.otp=await bcrypt.hash(otp.otp,salt);
     const result = await otp.save();
+    return res.send({email:req.body.email,otp:OTP});
+    
 })
 export default signIn;

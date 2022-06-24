@@ -2,7 +2,7 @@ import express from 'express';
 import connectDB from './config/db.mjs';
 import sendEmailRouter from './service/sendEmail.mjs';
 import signIn from './Controller/userSignInController.mjs';
-import verify from './Controller/userOtpVerifyController.mjs'
+import verify from './Controller/userOtpVerifyController.mjs';
 
 connectDB();
 
