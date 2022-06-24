@@ -1,6 +1,8 @@
 import express from 'express';
 import connectDB from './config/db.mjs';
-import sendEmailRouter from './routes/sendEmail.mjs'
+import sendEmailRouter from './service/sendEmail.mjs';
+import signIn from './Controller/userSignInController.mjs';
+import verify from './Controller/userOtpVerifyController.mjs'
 
 connectDB();
 
@@ -16,10 +18,11 @@ app.get('/',(req,res)=>{
 
 //Routing
 app.use('/emailSend', sendEmailRouter);
-
+app.use('/sigin',signIn);
+app.use('/verify',verify);
 
 //Starting server
-const PORT= process.env.PORT || 3000;
+const PORT= process.env.PORT ;
 app.listen(PORT, () =>{
     console.log(`App is running on port : ${PORT}`);
 })
