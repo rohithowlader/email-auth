@@ -13,6 +13,7 @@ const checkEmail = async (email) => {
 }
 
 const getTransporter = async () => {
+    //email authentication
     transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -36,6 +37,7 @@ const sendEmail = async (email, subject, text) => {
         subject: subject,
         text: text
     };
+    //sending email
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.log(error);
