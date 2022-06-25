@@ -1,6 +1,6 @@
 import redis from 'redis'
 
-let client
+let client = redis.client;
 
 const connectRedis = async () => {
     client = redis.createClient();

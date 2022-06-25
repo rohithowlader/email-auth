@@ -1,5 +1,3 @@
-import express from 'express';
-var sendEmailRouter = express.Router();
 import nodemailer from 'nodemailer';
 
 let transporter

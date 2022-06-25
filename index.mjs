@@ -1,11 +1,11 @@
 import express from 'express';
-import connectDB from './config/db.mjs';
-import sendEmailRouter from './service/sendEmail.mjs';
 import signIn from './Controller/userSignInController.mjs';
 import verify from './Controller/userOtpVerifyController.mjs';
 import connectRedis from './config/redis.mjs';
+import dotenv from 'dotenv'
 
-connectDB();
+dotenv.config()
+
 connectRedis();
 
 const app = express();
@@ -14,17 +14,15 @@ app.use(express.json());
 
 
 app.get('/',(req,res)=>{
-    res.send('index');
+    res.send('health ok');
 })
 
-
 //Routing
-app.use('/emailSend', sendEmailRouter);
 app.use('/sigin',signIn);
 app.use('/verify',verify);
 
 //Starting server
-const PORT= process.env.PORT ;
+const PORT= process.env.PORT;
 app.listen(PORT, () =>{
     console.log(`App is running on port : ${PORT}`);
 })
