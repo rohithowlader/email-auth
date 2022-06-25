@@ -14,6 +14,10 @@ const otpSchema = new Schema({
       wronginput:{
         type: Number,
         requied: true,
+      },
+      otpSentAt:{
+        type: Date,
+        default: Date.now(),
       }
 
 },{createdAt:{type:Date,default:Date.now,index:{expires:300}}

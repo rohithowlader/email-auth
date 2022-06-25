@@ -6,6 +6,10 @@ const userSchema = new Schema({
         type: String,
         requied: true,
       },
+    lastLogin: {
+        type : Date,
+        default: Date.now()
+      },
 },{timestamps:true});
 
 

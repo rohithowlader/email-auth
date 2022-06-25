@@ -21,6 +21,23 @@ verifyOtp.post('/',async(req,res)=>{
         const OTPDelete= await Otp.deleteMany({
             email:rightOtpFind.email
         })
+        const oldUser = await User.exists({email:req.body.email});
+        if(!oldUser)
+        {
+            console.log(Date.now);
+            const user=new User({email:req.body.email,lastLogin:Date.now()});
+            const result = await user.save();
+        }
+        else
+        {
+            console.log("olduser updated")
+            const filter = { email:req.body.email };
+            const update = {email:req.body.email,lastLogin:Date.now()};
+
+            let doc = await User.findOneAndUpdate(filter, update);
+
+        }
+        
         return res.status(200).send({
             message:"User Registration Succesfull!",
             token:token
