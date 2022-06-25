@@ -1,18 +1,43 @@
 import express from 'express';
-import Otp from "../models/otpModel.mjs";
 import newOTP from 'otp-generators';
-import bcrypt from 'bcrypt';
-var signIn= express.Router();
+import { getClient } from '../config/redis.mjs';
+import sendOTP from '../service/sendEmail.mjs';
+var signIn = express.Router();
 
+signIn.post('/', async (req, res) => {
 
-signIn.post('/',async(req,res)=>{
-    const OTP= newOTP.generate(6, { alphabets: true, upperCase: true, specialChar: false });
-    const email= req.body.email;
-    const otp=new Otp({email:email, otp:OTP});
-    const salt = await bcrypt.genSalt(10);
-    otp.otp=await bcrypt.hash(otp.otp,salt);
-    const result = await otp.save();
-    return res.send({email:req.body.email,otp:OTP});
-    
+    // Check rate limit
+    const client = await getClient();
+    let generateKey = `${req.body.email}_generateOTP`;
+    const isPresent = await client.get(generateKey)
+    if (isPresent) {
+        let t = await client.EXPIRETIME(generateKey);
+        res.status(400).json({
+            message: `Please wait ${t - Math.floor(Date.now()/1000)} seconds before generating another OTP`
+        });
+        return;
+    }
+
+    // Generate OTP
+    const OTP = newOTP.generate(6, { alphabets: true, upperCase: true, specialChar: false });
+
+    // Send mail
+    const email = req.body.email;
+    let message = await sendOTP(email, OTP);
+    if (message && message.message) {
+        res.status(400).json(message);
+        return;
+    } else {
+        // Save OTP in redis
+        let otpKey = `${email}_OTP`;
+        client.set(otpKey, OTP, {EX : 300});
+        res.status(200).json({
+            message: `OTP has been sent to ${email}`
+        });
+
+        client.set(generateKey, "1", {EX : 60});
+
+    }
 })
+
 export default signIn;

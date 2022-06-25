@@ -3,8 +3,10 @@ import connectDB from './config/db.mjs';
 import sendEmailRouter from './service/sendEmail.mjs';
 import signIn from './Controller/userSignInController.mjs';
 import verify from './Controller/userOtpVerifyController.mjs';
+import connectRedis from './config/redis.mjs';
 
 connectDB();
+connectRedis();
 
 const app = express();
 app.use(express.urlencoded({extended: false}));
