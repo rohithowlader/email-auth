@@ -1,8 +1,10 @@
 import redis from 'redis'
 
-let client = redis.client;
+let client = null;
 
-const connectRedis = async () => {
+const getClient= async () => {
+    if(client)
+    return client;
     client = redis.createClient();
     client.on('connect', function () {
         console.log('Connected!');
@@ -10,6 +12,7 @@ const connectRedis = async () => {
     );
     client.on('error', (err) => console.log('Redis Client Error', err));
     try {
+        
         await client.connect();
     } catch (err) {
         console.log(err);
@@ -17,9 +20,4 @@ const connectRedis = async () => {
     return client;
 }
 
-const getClient = async () => {
-    return client;
-}
-
-export default connectRedis;
-export { getClient };
+export default getClient;

@@ -1,12 +1,12 @@
 import express from 'express';
 import signIn from './Controller/userSignInController.mjs';
 import verify from './Controller/userOtpVerifyController.mjs';
-import connectRedis from './config/redis.mjs';
+import getClient from './config/redis.mjs';
 import dotenv from 'dotenv'
 
 dotenv.config()
 
-connectRedis();
+getClient();
 
 const app = express();
 app.use(express.urlencoded({extended: false}));

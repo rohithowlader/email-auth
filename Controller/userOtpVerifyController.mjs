@@ -1,7 +1,7 @@
 import express from 'express';
 import JWT from 'jsonwebtoken';
-import { getClient } from '../config/redis.mjs';
-var verifyOtp = express.Router();
+import getClient from '../config/redis.mjs';
+var verifyOtp = express.Router(); 
 
 verifyOtp.post('/', async (req, res) => {
     try {
@@ -45,7 +45,7 @@ verifyOtp.post('/', async (req, res) => {
                 let blockKey = `${email}_block`;
                 client.set(blockKey, "1", { EX: 60 * 60 });
             }
-            client.set(wrongOtpKey, wrongOtp);
+            client.set(wrongOtpKey, wrongOtp,{ EX: 60 * 60 });
             res.status(400).json({
                 message: `OTP is invalid`
             });

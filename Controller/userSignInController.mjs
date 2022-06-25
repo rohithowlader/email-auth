@@ -1,6 +1,6 @@
 import express from 'express';
 import newOTP from 'otp-generators';
-import { getClient } from '../config/redis.mjs';
+import getClient from '../config/redis.mjs';
 import sendOTP from '../service/sendEmail.mjs';
 var signIn = express.Router();
 
@@ -41,9 +41,9 @@ signIn.post('/', async (req, res) => {
         } else {
             // Save OTP in redis
             let otpKey = `${email}_OTP`;
-            [a, b] = client.multi()
+            client.multi()
                 .set(otpKey, OTP, { EX: 60 * 5 })
-                .set(generateKey, "1", { EX: 60 * 5 }).exec();
+                .set(generateKey, "1", { EX: 60}).exec();
             res.status(200).json({
                 message: `OTP has been sent to ${email}`
             });
