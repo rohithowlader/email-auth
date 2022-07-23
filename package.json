@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/rohithowlader/email-auth#readme",
   "dependencies": {
-    "bcrypt": "^5.0.1",
     "dotenv": "^16.0.1",
     "ejs": "^3.1.8",
     "express": "^4.18.1",
